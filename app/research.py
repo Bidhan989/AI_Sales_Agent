@@ -38,7 +38,7 @@ def fetch_website_text(url: str, limit: int = 3000) -> dict:
     if not url.startswith("http"):
         url = "https://" + url
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (ScaleBuildAI research bot)"})
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Sales_AI research bot)"})
         with urllib.request.urlopen(req, timeout=6) as r:
             html = r.read(400_000).decode("utf-8", errors="ignore")
         p = _Text()

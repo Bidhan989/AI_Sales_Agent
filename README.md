@@ -1,4 +1,4 @@
-# ScaleBuild AI — AI Sales Agent
+# AI Sales Agent
 
 Lead intake → website research → AI scoring → **rule-based qualification** → personalized email → follow-ups → reply classification → CRM log + hot-lead alert.
 

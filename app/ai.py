@@ -75,7 +75,7 @@ def _demo_analysis(lead: dict, web: str) -> dict:
     }
 
 def analyze_lead(lead: dict, website_text: str = "") -> dict:
-    prompt = f"""You are an AI SDR for ScaleBuild AI, which sells AI sales-automation workflows to B2B companies.
+    prompt = f"""You are an AI SDR for Sales_agent, which sells AI sales-automation workflows to B2B companies.
 Analyze this prospect.
 
 Company: {lead.get('company')}
