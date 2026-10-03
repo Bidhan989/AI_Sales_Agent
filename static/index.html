@@ -3,58 +3,66 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Sales Agent — ScaleBuild AI Demo</title>
+<title>AI Sales Agent — ScaleBuild AI</title>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <div class="shell">
   <aside>
-    <div class="brand"><span class="logo">∞</span><div><b>AI Sales Agent</b><small>ScaleBuild-style GTM demo</small></div></div>
-    <div class="side-note">
-      <b>Automation pipeline</b>
-      <div>Lead → Research → Score → Outreach → Reply → CRM</div>
-    </div>
-    <div class="side-note">
-      <b>Mode</b>
-      <div id="mode">Checking...</div>
-    </div>
+    <div class="brand"><span class="logo">∞</span><div><b>AI Sales Agent</b><small>ScaleBuild AI</small></div></div>
+    <div class="side-note"><b>Pipeline</b><div>Lead → Research → Score → Rules → Outreach → Follow-up → Reply → CRM</div></div>
+    <div class="side-note"><b>What's live</b>
+      <div id="modes">Checking...</div></div>
+    <div class="side-note"><b>ICP rules</b><div id="icp"></div></div>
   </aside>
-
   <main>
     <header>
       <div>
         <p class="eyebrow">AI GTM ENGINE</p>
         <h1>Outbound Sales Agent</h1>
-        <p class="muted">Prospect qualification, research, personalized outreach and pipeline automation.</p>
+        <p class="muted">Research, qualify, write, follow up, classify replies, alert a human.</p>
       </div>
-      <button class="primary" onclick="runAll()">Run demo workflow</button>
+      <div class="head-actions">
+        <button class="btn" onclick="runFollowups()">Run follow-ups (demo)</button>
+        <button class="primary" id="runbtn" onclick="runAll()">Run full pipeline</button>
+      </div>
     </header>
 
-    <section class="stats">
-      <div><span>Leads</span><strong id="s-leads">0</strong></div>
-      <div><span>Qualified</span><strong id="s-qualified">0</strong></div>
-      <div><span>Contacted</span><strong id="s-contacted">0</strong></div>
-      <div><span>Interested</span><strong id="s-interested">0</strong></div>
-    </section>
+    <div id="hot"></div>
+
+    <section class="stats" id="stats"></section>
 
     <section class="panel">
-      <div class="panel-head"><div><h2>Lead pipeline</h2><p class="muted">Select a prospect to inspect the AI decision.</p></div></div>
+      <div class="panel-head row">
+        <div><h2>Lead pipeline</h2><p class="muted">Click a prospect to inspect the AI decision.</p></div>
+        <div class="head-actions">
+          <input type="file" id="csv" accept=".csv" hidden onchange="uploadCsv(this)">
+          <button class="btn" onclick="document.getElementById('csv').click()">Upload CSV</button>
+          <button class="btn" onclick="toggleForm()">+ Add lead</button>
+        </div>
+      </div>
+      <div id="addform" class="addform" hidden>
+        <input id="f-company" placeholder="Company *"><input id="f-website" placeholder="Website (https://...)">
+        <input id="f-industry" placeholder="Industry"><input id="f-employees" placeholder="Employees" type="number">
+        <input id="f-name" placeholder="Contact name"><input id="f-role" placeholder="Contact role">
+        <input id="f-email" placeholder="Email"><input id="f-desc" placeholder="Short description">
+        <button class="primary" onclick="addLead()">Add</button>
+      </div>
       <div class="table-wrap">
-        <table><thead><tr><th>Company</th><th>Contact</th><th>Fit</th><th>Status</th><th>Action</th></tr></thead>
+        <table><thead><tr><th>Company</th><th>Contact</th><th>Fit</th><th>Status</th><th></th></tr></thead>
         <tbody id="leads"></tbody></table>
       </div>
     </section>
 
-    <section class="panel detail" id="detail">
-      <div class="empty">Select a lead above.</div>
-    </section>
+    <section class="panel detail" id="detail"><div class="empty">Select a lead above.</div></section>
 
     <footer>
-      <span>Demo-safe: no external prospect data is scraped by this MVP.</span>
-      <span>Live Gemini/Gmail are opt-in.</span>
+      <span>Badges show what is LIVE vs SIMULATED at every step.</span>
+      <span>Use a test address. No bulk mail.</span>
     </footer>
   </main>
 </div>
+<div id="toast"></div>
 <script src="/static/app.js"></script>
 </body>
 </html>

@@ -1,12 +1,20 @@
 {
-  "name": "ScaleBuild AI - AI Sales Agent Demo",
+  "name": "ScaleBuild AI - Outbound Automation",
   "nodes": [
     {
-      "parameters": {},
-      "id": "1",
-      "name": "Manual Trigger",
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1
+            }
+          ]
+        }
+      },
+      "name": "Every day",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
       "position": [
         0,
         0
@@ -14,72 +22,102 @@
     },
     {
       "parameters": {
-        "jsCode": "return [{json:{company:'Demo SaaS', contact:'Alex', role:'VP Sales', fit_score:88}}];"
+        "method": "POST",
+        "url": "http://localhost:8000/api/pipeline/run",
+        "options": {
+          "timeout": 300000
+        }
       },
-      "id": "2",
-      "name": "Demo Lead",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "name": "Run pipeline (new leads)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        220,
+        260,
         0
       ]
     },
     {
       "parameters": {
-        "jsCode": "const l=$json; return [{json:{...l, decision:l.fit_score>=80?'QUALIFIED':'DISQUALIFIED'}}];"
+        "method": "POST",
+        "url": "http://localhost:8000/api/followups/run",
+        "options": {
+          "timeout": 300000
+        }
       },
-      "id": "3",
-      "name": "AI Qualification Placeholder",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "name": "Send due follow-ups",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        460,
+        520,
         0
       ]
     },
     {
       "parameters": {
-        "jsCode": "return [{json:{...$json, next_action:$json.decision==='QUALIFIED'?'Generate personalized outreach':'Stop'}}];"
+        "httpMethod": "POST",
+        "path": "hot-lead",
+        "options": {}
       },
-      "id": "4",
-      "name": "Next Action",
-      "type": "n8n-nodes-base.code",
+      "name": "Hot lead webhook",
+      "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        700,
-        0
+        0,
+        240
+      ],
+      "webhookId": "scalebuild-hot-lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "alert",
+              "type": "string",
+              "value": "=HOT LEAD: {{ $json.body.contact }} at {{ $json.body.company }} replied: {{ $json.body.reply }} -> {{ $json.body.action }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Format alert",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        240
       ]
     }
   ],
   "connections": {
-    "Manual Trigger": {
+    "Every day": {
       "main": [
         [
           {
-            "node": "Demo Lead",
+            "node": "Run pipeline (new leads)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Demo Lead": {
+    "Run pipeline (new leads)": {
       "main": [
         [
           {
-            "node": "AI Qualification Placeholder",
+            "node": "Send due follow-ups",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "AI Qualification Placeholder": {
+    "Hot lead webhook": {
       "main": [
         [
           {
-            "node": "Next Action",
+            "node": "Format alert",
             "type": "main",
             "index": 0
           }
@@ -87,10 +125,7 @@
       ]
     }
   },
-  "active": false,
-  "settings": {},
-  "versionId": "demo",
-  "meta": {
-    "templateCredsSetupCompleted": true
+  "settings": {
+    "executionOrder": "v1"
   }
 }

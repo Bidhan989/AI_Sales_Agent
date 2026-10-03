@@ -1,31 +1,22 @@
-# Environment variables and API keys
+# Secrets
 .env
-
-# Google OAuth Credentials & Active Tokens
+.env.*
+!.env.example
 credentials.json
 token.json
 
-# Python Virtual Environment
+# Environment and cache
 .venv/
 venv/
-ENV/
-env/
-
-# Python Cache & Bytecode
 __pycache__/
 *.py[cod]
-*$py.class
 
-# SQLite Database (Exclude if you don't want live DB data committed)
-*.sqlite3
+# Local database (your lead data and results)
 *.db
-# Keep data schema directory clean
-!data/
+*.sqlite3
 
-# OS-specific files
+# OS / editor
 .DS_Store
 Thumbs.db
-
-# IDE settings
 .vscode/
 .idea/

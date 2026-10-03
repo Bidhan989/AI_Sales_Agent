@@ -13,12 +13,16 @@ def gmail_available():
     )
 
 def send_email(to, subject, body):
+    # SAFETY: if TEST_RECIPIENT is set, every email goes there instead of the lead.
+    override = os.getenv("TEST_RECIPIENT", "").strip()
+    if override:
+        to = override
     if not gmail_available():
         return {
             "sent": False, 
             "status": "drafted", 
             "mode": "SIMULATED", 
-            "message": "Gmail sending is disabled or credentials.json is missing."
+            "message": "SIMULATED: SEND_EMAILS is not true or credentials.json is missing. Nothing was sent."
         }
 
     from google_auth_oauthlib.flow import InstalledAppFlow
@@ -49,7 +53,7 @@ def send_email(to, subject, body):
         "sent": True, 
         "status": "sent", 
         "mode": "LIVE", 
-        "message": "Email sent through Gmail API."
+        "message": f"Email sent through Gmail API to {to}."
     }
 
 def create_email_draft(to, subject, body):

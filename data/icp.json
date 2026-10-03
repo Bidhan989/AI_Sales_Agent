@@ -1,0 +1,9 @@
+{
+  "industries": ["saas", "software", "sales tech", "analytics", "b2b"],
+  "min_employees": 20,
+  "max_employees": 200,
+  "target_roles": ["founder", "ceo", "head of sales", "vp sales", "head of growth", "cro", "co-founder"],
+  "min_score": 80,
+  "followup_days": [3, 4],
+  "max_followups": 2
+}
