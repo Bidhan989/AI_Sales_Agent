@@ -23,7 +23,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:8000/api/pipeline/run",
+        "url": "http://127.0.0.1:8000/api/pipeline/run",
         "options": {
           "timeout": 300000
         }
@@ -39,7 +39,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:8000/api/followups/run",
+        "url": "http://127.0.0.1:8000/api/followups/run",
         "options": {
           "timeout": 300000
         }
