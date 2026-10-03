@@ -1,0 +1,31 @@
+# Environment variables and API keys
+.env
+
+# Google OAuth Credentials & Active Tokens
+credentials.json
+token.json
+
+# Python Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite Database (Exclude if you don't want live DB data committed)
+*.sqlite3
+*.db
+# Keep data schema directory clean
+!data/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/

@@ -1,0 +1,96 @@
+{
+  "name": "ScaleBuild AI - AI Sales Agent Demo",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{json:{company:'Demo SaaS', contact:'Alex', role:'VP Sales', fit_score:88}}];"
+      },
+      "id": "2",
+      "name": "Demo Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const l=$json; return [{json:{...l, decision:l.fit_score>=80?'QUALIFIED':'DISQUALIFIED'}}];"
+      },
+      "id": "3",
+      "name": "AI Qualification Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{json:{...$json, next_action:$json.decision==='QUALIFIED'?'Generate personalized outreach':'Stop'}}];"
+      },
+      "id": "4",
+      "name": "Next Action",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Demo Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Demo Lead": {
+      "main": [
+        [
+          {
+            "node": "AI Qualification Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Qualification Placeholder": {
+      "main": [
+        [
+          {
+            "node": "Next Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "demo",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
